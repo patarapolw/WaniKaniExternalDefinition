@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         WaniKani External Definition
 // @namespace    http://www.wanikani.com
-// @version      0.5
+// @version      0.6
 // @description  Get External Definition from Weblio, Kanjipedia
-// @author       polv
+// @author       NicoleRauch (original script by polv)
 // @match        *://www.wanikani.com/review/session*
 // @match        *://www.wanikani.com/lesson/session*
 // @match      *://www.wanikani.com/*vocabulary/*
