@@ -25,7 +25,7 @@
     });
 
     function updateInfo(){
-        if(word.length == 1) {
+        if(word.length === 1) {
             var url_base = 'http://www.kanjipedia.jp/';
             console.log('Opening ' + url_base + 'search?k=' + word + '&kt=1&sk=leftHand');
             GM_xmlhttpRequest({
@@ -41,15 +41,15 @@
                             var result2 = $('<div />').append(data.responseText).find('#kanjiRightSection p').html();
                             if(result === undefined) result = "Definition not found.";
 
-                            if (url.indexOf('vocabulary') != -1 || url.indexOf('kanji') != -1 || url.indexOf('radical') != -1)
+                            if (url.indexOf('vocabulary') !== -1 || url.indexOf('kanji') !== -1 || url.indexOf('radical') !== -1)
                                 $('<section class="kanjipedia"></section>').insertAfter('#information');
                             $('#item-info-col2').prepend('<section class="kanjipedia"></section>');
-                            if(url.indexOf('lesson')!=-1) {
+                            if(url.indexOf('lesson') !== -1) {
                                 $('#supplement-kan-meaning .col2').prepend('<section class="kanjipedia"></section>');
                                 $('#supplement-voc-meaning .col2').prepend('<section class="kanjipedia"></section>');
                                 console.log('Prepended');
                             } else {
-                                if ($.jStorage.get('questionType')=='reading') $('.kanjipedia').css('display','none');
+                                if ($.jStorage.get('questionType') === 'reading') $('.kanjipedia').css('display','none');
                             }
 
                             $('.kanjipedia').html(result2 + '<br><a href="'+ url_base + result.slice(25) +'" target="_blank">Click for full entries</a>');
@@ -68,16 +68,16 @@
                     if(result === undefined){
                         result = "Definition not found.";
                     }
-                    if(word.length == 1) {
+                    if(word.length === 1) {
                         var i = -1;
                         $.each($('<div />').append(data.responseText).find('.NetDicHead .midashigo'), function(index, value){
                             var str = value.textContent;
-                            if( str.indexOf('漢字') != -1 ) i = index;
+                            if( str.indexOf('漢字') !== -1 ) i = index;
                         });
                         console.log(i);
 
                         var full_result = $('<div />').append(data.responseText).find('.NetDicBody:nth-child('+ (3*i+2) +')').html();
-                        if (i != -1){
+                        if (i !== -1){
                             result = '';
                             for(var j=0; result.length < 200 && nthIndex(full_result, word, j) < result.length; ) {
                                 j++;
@@ -88,16 +88,16 @@
                             result = 'Kanji definition not found.';
                     }
 
-                    if (url.indexOf('vocabulary') != -1 || url.indexOf('kanji') != -1 || url.indexOf('radical') != -1)
+                    if (url.indexOf('vocabulary') !== -1 || url.indexOf('kanji') !== -1 || url.indexOf('radical') !== -1)
                         $('<section class="weblio"></section>').insertAfter('#information');
                     $('#item-info-col2').prepend('<section class="weblio"></section>');
 
-                    if(url.indexOf('lesson')!=-1){
+                    if(url.indexOf('lesson') !== -1){
                         $('#supplement-kan-meaning .col2').prepend('<section class="weblio"></section>');
                         $('#supplement-voc-meaning .col2').prepend('<section class="weblio"></section>');
                         console.log('Prepended');
                     } else {
-                        if ($.jStorage.get('questionType')=='reading') $('.weblio').css('display','none');
+                        if ($.jStorage.get('questionType') === 'reading') $('.weblio').css('display','none');
                     }
 
                     $('.weblio').html(result + '<br><a href="https://www.weblio.jp/content/' + word +'" target="_blank">Click for full entries</a>');
@@ -107,7 +107,7 @@
         }
     }
 
-    if (url.indexOf('vocabulary') != -1 || url.indexOf('kanji') != -1 || url.indexOf('radical') != -1) {
+    if (url.indexOf('vocabulary') !== -1 || url.indexOf('kanji') !== -1 || url.indexOf('radical') !== -1) {
         word = $('span.japanese-font-styling-correction:first').text().trim().replace(/する|〜/,'');
         updateInfo();
     }
@@ -115,7 +115,7 @@
     var observer = new MutationObserver(function(mutations) {
         for(var i=0; i<mutations.length; ++i) {
             for(var j=0; j<mutations[i].addedNodes.length; ++j) {
-                if(mutations[i].addedNodes[j].id == "item-info-meaning-mnemonic") {
+                if(mutations[i].addedNodes[j].id === "item-info-meaning-mnemonic") {
                     updateInfo();
                 }
             }
@@ -135,7 +135,7 @@
     var observer3 = new MutationObserver(function(mutations) {
         for(var i=0; i<mutations.length; ++i) {
             for(var j=0; j<mutations[i].addedNodes.length; ++j) {
-                if(mutations[i].addedNodes[j].style.display == "block") {
+                if(mutations[i].addedNodes[j].style.display === "block") {
                     $('.weblio').css('display','block');
                     $('.kanjipedia').css('display','block');
                 }
