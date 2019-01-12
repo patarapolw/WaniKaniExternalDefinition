@@ -27,18 +27,20 @@
     function updateInfo(){
         if(word.length === 1) {
             var url_base = 'https://www.kanjipedia.jp/';
+            var regex = /img src="/g;
+            var replacement = "img src=\"" + url_base;
             console.log('Opening ' + url_base + 'search?k=' + word + '&kt=1&sk=leftHand');
             GM_xmlhttpRequest({
                 method: "GET",
                 url: url_base + 'search?k=' + word + '&kt=1&sk=leftHand',
                 onload: function(data) {
-                    var result = $('<div />').append(data.responseText).find('#resultKanjiList a')[0].href;
+                    var result = $('<div />').append(data.responseText.replace(regex, replacement)).find('#resultKanjiList a')[0].href;
                     console.log('Opening ' + url_base + result.slice(25));
                     GM_xmlhttpRequest({
                         method: "GET",
                         url: url_base + result.slice(25),
                         onload: function(data) {
-                            var result2 = $('<div />').append(data.responseText).find('#kanjiRightSection p').html();
+                            var result2 = $('<div />').append(data.responseText.replace(regex, replacement)).find('#kanjiRightSection p').html();
                             if(result === undefined) result = "Definition not found.";
 
                             if (url.indexOf('vocabulary') !== -1 || url.indexOf('kanji') !== -1 || url.indexOf('radical') !== -1)
