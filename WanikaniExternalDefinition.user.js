@@ -26,7 +26,7 @@
 
     function updateInfo(){
         if(word.length === 1) {
-            var url_base = 'http://www.kanjipedia.jp/';
+            var url_base = 'https://www.kanjipedia.jp/';
             console.log('Opening ' + url_base + 'search?k=' + word + '&kt=1&sk=leftHand');
             GM_xmlhttpRequest({
                 method: "GET",
