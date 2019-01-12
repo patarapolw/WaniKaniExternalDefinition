@@ -28,7 +28,7 @@
         if(word.length === 1) {
             var url_base = 'https://www.kanjipedia.jp/';
             var regex = /img src="/g;
-            var replacement = "img src=\"" + url_base;
+            var replacement = "img width=\"16px\" src=\"" + url_base;
             console.log('Opening ' + url_base + 'search?k=' + word + '&kt=1&sk=leftHand');
             GM_xmlhttpRequest({
                 method: "GET",
