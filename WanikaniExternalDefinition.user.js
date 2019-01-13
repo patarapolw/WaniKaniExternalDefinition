@@ -29,13 +29,16 @@
 
     var url = document.URL;
 
-    $.jStorage.listenKeyChange('currentItem', function(key) {
-        var w = $('div#character').text().trim().replace(/する|〜/,'');
-        if(w.length === 1) {
-            kanji = w;
-        } else {
-            vocab = w;
-        }
+    $.jStorage.listenKeyChange('currentItem', function () {
+        var current = $.jStorage.get('currentItem');
+        kanji = current.kan;
+        vocab = current.voc ? current.voc.replace(/する|〜/,'') : undefined;
+    });
+
+    $.jStorage.listenKeyChange('l/currentLesson', function () {
+        var current = $.jStorage.get('l/currentLesson');
+        kanji = current.kan;
+        vocab = current.voc ? current.voc.replace(/する|〜/,'') : undefined;
     });
 
 
