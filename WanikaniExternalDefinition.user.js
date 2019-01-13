@@ -28,11 +28,14 @@
     }
 
     var url = document.URL;
+    console.log("url", url);
 
     $.jStorage.listenKeyChange('currentItem', function () {
+        console.log("currentItem", current)
         var current = $.jStorage.get('currentItem');
         kanji = current.kan;
         vocab = current.voc ? current.voc.replace(/する|〜/,'') : undefined;
+        updateInfo();
     });
 
     $.jStorage.listenKeyChange('l/currentLesson', function () {
