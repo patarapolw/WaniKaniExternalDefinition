@@ -185,15 +185,15 @@
     });
     observer3.observe($('#item-info-meaning-mnemonic').get(0), { attributes: true });
 
+    function nthIndex(str, pat, n) {
+        var L = str.length, i = -1;
+        while (n-- && i++ < L) {
+            i = str.indexOf(pat, i);
+            if (i < 0) break;
+        }
+        return i;
+    }
 })();
 
-function nthIndex(str, pat, n){
-    var L= str.length, i= -1;
-    while(n-- && i++<L){
-        i= str.indexOf(pat, i);
-        if (i < 0) break;
-    }
-    return i;
-}
 
 try { $('.app-store-menu-item').remove(); $('<li class="app-store-menu-item"><a href="https://community.wanikani.com/t/there-are-so-many-user-scripts-now-that-discovering-them-is-hard/20709">App Store</a></li>').insertBefore($('.navbar .dropdown-menu .nav-header:contains("Account")')); window.appStoreRegistry = window.appStoreRegistry || {}; window.appStoreRegistry[GM_info.script.uuid] = GM_info; localStorage.appStoreRegistry = JSON.stringify(appStoreRegistry); } catch (e) {}
