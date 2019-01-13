@@ -78,7 +78,8 @@
                     });
                 }
             });
-        } else {
+        }
+        if(vocab) {
             console.log('Opening ' + 'https://www.weblio.jp/content/' + vocab);
             GM_xmlhttpRequest({
                 method: "GET",
