@@ -42,6 +42,7 @@
         var current = $.jStorage.get('l/currentLesson');
         kanji = current.kan;
         vocab = current.voc ? current.voc.replace(/する|〜/, '') : undefined;
+        updateInfo();
     });
 
 
