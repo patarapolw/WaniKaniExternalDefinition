@@ -59,7 +59,7 @@
                         url: url_base + result.slice(25),
                         onload: function(data) {
                             var result2 = $('<div />').append(data.responseText.replace(regex, replacement)).find('#kanjiRightSection p').html();
-                            if(result === undefined) result = "Definition not found.";
+                            if(result2 === undefined) result2 = "Definition not found.";
 
                             if (url.indexOf('vocabulary') !== -1 || url.indexOf('kanji') !== -1 || url.indexOf('radical') !== -1)
                                 $('<section class="kanjipedia"></section>').insertAfter('#information');
