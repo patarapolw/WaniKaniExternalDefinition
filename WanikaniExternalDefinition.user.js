@@ -62,7 +62,7 @@
                             if(result2 === undefined) result2 = "Definition not found.";
 
                             if (url.indexOf('kanji') !== -1) {
-                                $('<section class="kanjipedia"></section>').insertAfter('#information');
+                                $('<section class="kanjipedia"></section>').insertBefore('#note-meaning');
                             }
                             $('#item-info-col2').prepend('<section class="kanjipedia"></section>');
                             if(url.indexOf('lesson') !== -1) {
