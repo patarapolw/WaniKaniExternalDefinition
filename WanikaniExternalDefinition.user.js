@@ -61,8 +61,9 @@
                             var result2 = $('<div />').append(data.responseText.replace(regex, replacement)).find('#kanjiRightSection p').html();
                             if(result2 === undefined) result2 = "Definition not found.";
 
-                            if (url.indexOf('vocabulary') !== -1 || url.indexOf('kanji') !== -1 || url.indexOf('radical') !== -1)
+                            if (url.indexOf('kanji') !== -1) {
                                 $('<section class="kanjipedia"></section>').insertAfter('#information');
+                            }
                             $('#item-info-col2').prepend('<section class="kanjipedia"></section>');
                             if(url.indexOf('lesson') !== -1) {
                                 $('#supplement-kan-meaning .col2').prepend('<section class="kanjipedia"></section>');
