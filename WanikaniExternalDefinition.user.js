@@ -127,7 +127,7 @@
                         if ($.jStorage.get('questionType') === 'reading') $('.weblio').css('display','none');
                     }
 
-                    $('.weblio').html(result + '<br><a href="https://www.weblio.jp/content/' + vocab +'" target="_blank">Click for full entries</a>');
+                    $('.weblio').html(result + '<a href="https://www.weblio.jp/content/' + vocab +'" target="_blank">Click for full entries</a>');
                     $('.weblio').prepend('<h2>Weblio Explanation</h2>');
                     $('.weblio').css('display','block');
                 }
