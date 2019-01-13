@@ -114,8 +114,9 @@
                             result = 'Kanji definition not found.';
                     }
 
-                    if (url.indexOf('vocabulary') !== -1 || url.indexOf('kanji') !== -1 || url.indexOf('radical') !== -1)
-                        $('<section class="weblio"></section>').insertAfter('#information');
+                    if (url.indexOf('vocabulary') !== -1) {
+                        $('<section class="weblio"></section>').insertBefore('#note-meaning');
+                    }
                     $('#item-info-col2').prepend('<section class="weblio"></section>');
 
                     if(url.indexOf('lesson') !== -1){
@@ -128,6 +129,7 @@
 
                     $('.weblio').html(result + '<br><a href="https://www.weblio.jp/content/' + vocab +'" target="_blank">Click for full entries</a>');
                     $('.weblio').prepend('<h2>Weblio Explanation</h2>');
+                    $('.weblio').css('display','block');
                 }
             });
         }
