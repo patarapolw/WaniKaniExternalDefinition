@@ -128,15 +128,18 @@
         }
     }
 
-    if (url.indexOf('vocabulary') !== -1 || url.indexOf('kanji') !== -1 || url.indexOf('radical') !== -1) {
-        var w = $('span.japanese-font-styling-correction:first').text().trim().replace(/する|〜/,'');
-        if(w.length === 1){
-            kanji = w;
-        } else {
-            vocab = w;
-        }
+    var urlParts = url.split("/");
+    console.log(urlParts)
+    if(urlParts[urlParts.length - 2] === "kanji"){
+        kanji = urlParts[urlParts.length - 1];
         updateInfo();
     }
+    if(urlParts[urlParts.length - 2] === "vocabulary"){
+        vocab = urlParts[urlParts.length - 1].replace(/する|〜/,'');
+        updateInfo();
+    }
+
+
 
     var observer = new MutationObserver(function(mutations) {
         for(var i=0; i<mutations.length; ++i) {
