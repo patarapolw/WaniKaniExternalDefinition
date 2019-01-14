@@ -61,13 +61,15 @@
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // Loading the information and updating the webpage
     function updateInfo() {
+        var hrefColor = ' style="color: darkgray;"';
+
         function insertHTML(clazz, html, full_url, name) {
             if (url.indexOf('kanji') !== -1 || url.indexOf('vocabulary') !== -1 || url.indexOf('review') !== -1) {
                 console.log("inserted on item or review page")
                 $('<section class="' + clazz + '"></section>').insertBefore('#note-meaning');
             }
 
-            $('.' + clazz).html(html + '<a href="' + full_url + '" target="_blank">Click for full entries</a>');
+            $('.' + clazz).html(html + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entries</a>');
             $('.' + clazz).prepend('<h2>' + name + ' Explanation</h2>');
             $('.' + clazz).css('display', 'block');
         }
