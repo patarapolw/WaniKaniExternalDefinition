@@ -105,10 +105,11 @@
             });
         }
         if (vocab) {
-            console.log('Opening ' + 'https://www.weblio.jp/content/' + vocab);
+            var url_vocab = 'https://www.weblio.jp/content/' + vocab;
+            console.log('Opening ' + url_vocab);
             GM_xmlhttpRequest({
                 method: "GET",
-                url: 'https://www.weblio.jp/content/' + vocab,
+                url: url_vocab,
                 onload: function (data) {
                     var result = $('<div />').append(data.responseText).find('.NetDicBody').html();
                     if (result === undefined) {
@@ -147,7 +148,7 @@
                     */
 
 
-                    insertHTML('weblio', result, 'https://www.weblio.jp/content/' + vocab, 'Weblio');
+                    insertHTML('weblio', result, url_vocab, 'Weblio');
                 }
             });
         }
