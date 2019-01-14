@@ -157,7 +157,7 @@
     }
 
 
-    // updating on review change, but only when on meaning page:
+    // trigggering on review change, but only when on meaning page:
     var observer = new MutationObserver(function (mutations) {
         for (var i = 0; i < mutations.length; ++i) {
             for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
