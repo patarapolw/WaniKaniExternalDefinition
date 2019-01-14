@@ -62,6 +62,11 @@
     // Loading the information and updating the webpage
     function updateInfo() {
         function insertHTML(clazz, html, full_url, name) {
+            if (url.indexOf('kanji') !== -1 || url.indexOf('vocabulary') !== -1 || url.indexOf('review') !== -1) {
+                console.log("inserted on item or review page")
+                $('<section class="' + clazz + '"></section>').insertBefore('#note-meaning');
+            }
+
             $('.' + clazz).html(html + '<a href="' + full_url + '" target="_blank">Click for full entries</a>');
             $('.' + clazz).prepend('<h2>' + name + ' Explanation</h2>');
             $('.' + clazz).css('display', 'block');
@@ -84,13 +89,6 @@
                         onload: function (data) {
                             var result2 = $('<div />').append(data.responseText.replace(regex, replacement)).find('#kanjiRightSection p').html();
                             if (result2 === undefined) result2 = "Definition not found.";
-
-                            if (url.indexOf('kanji') !== -1) {
-                                $('<section class="kanjipedia"></section>').insertBefore('#note-meaning');
-                            }
-                            if (url.indexOf('review') !== -1) {
-                                $('<section class="kanjipedia"></section>').insertBefore('#note-meaning');
-                            }
 
                             // $('#item-info-col2').prepend('<section class="kanjipedia"></section>');
                             if (url.indexOf('lesson') !== -1) {
@@ -134,14 +132,6 @@
                             console.log(result.length);
                         } else
                             result = 'Kanji definition not found.';
-                    }
-
-                    if (url.indexOf('vocabulary') !== -1) {
-                        $('<section class="weblio"></section>').insertBefore('#note-meaning');
-                    }
-                    if (url.indexOf('review') !== -1) {
-                        // #note-meaning is present but hidden on the review page
-                        $('<section class="weblio"></section>').insertBefore('#note-meaning');
                     }
 
                     if (url.indexOf('lesson') !== -1) {
