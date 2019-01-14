@@ -82,13 +82,17 @@
                             if (url.indexOf('kanji') !== -1) {
                                 $('<section class="kanjipedia"></section>').insertBefore('#note-meaning');
                             }
-                            $('#item-info-col2').prepend('<section class="kanjipedia"></section>');
+                            if (url.indexOf('review') !== -1) {
+                                $('<section class="kanjipedia"></section>').insertBefore('#note-meaning');
+                            }
+
+                            // $('#item-info-col2').prepend('<section class="kanjipedia"></section>');
                             if (url.indexOf('lesson') !== -1) {
                                 $('#supplement-kan-meaning .col2').prepend('<section class="kanjipedia"></section>');
-                                console.log('Prepended');
-                            } else {
+                                console.log('Prepended kanji');
+                            } /* else {
                                 if ($.jStorage.get('questionType') === 'reading') $('.kanjipedia').css('display', 'none');
-                            }
+                            } */
 
                             $('.kanjipedia').html(result2 + '<br><a href="' + url_base + result.slice(25) + '" target="_blank">Click for full entries</a>');
                             $('.kanjipedia').prepend('<h2>Kanjipedia Explanation</h2>');
