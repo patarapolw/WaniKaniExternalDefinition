@@ -94,7 +94,7 @@
                                 if ($.jStorage.get('questionType') === 'reading') $('.kanjipedia').css('display', 'none');
                             } */
 
-                            $('.kanjipedia').html(result2 + '<br><a href="' + url_base + result.slice(25) + '" target="_blank">Click for full entries</a>');
+                            $('.kanjipedia').html("<div style='margin-bottom: 0px;'>" + result2 + "</div>" + '<a href="' + url_base + result.slice(25) + '" target="_blank">Click for full entries</a>');
                             $('.kanjipedia').prepend('<h2>Kanjipedia Explanation</h2>');
                             $('.kanjipedia').css('display', 'block');
                         }
