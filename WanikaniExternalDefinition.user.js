@@ -61,6 +61,12 @@
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // Loading the information and updating the webpage
     function updateInfo() {
+        function insertHTML(clazz, html, full_url, name) {
+            $('.' + clazz).html(html + '<a href="' + full_url + '" target="_blank">Click for full entries</a>');
+            $('.' + clazz).prepend('<h2>' + name + ' Explanation</h2>');
+            $('.' + clazz).css('display', 'block');
+        }
+
         if (kanji) {
             var url_base = 'https://www.kanjipedia.jp/';
             var regex = /img src="/g;
@@ -94,9 +100,7 @@
                                 if ($.jStorage.get('questionType') === 'reading') $('.kanjipedia').css('display', 'none');
                             } */
 
-                            $('.kanjipedia').html("<div style='margin-bottom: 0px;'>" + result2 + "</div>" + '<a href="' + url_base + result.slice(25) + '" target="_blank">Click for full entries</a>');
-                            $('.kanjipedia').prepend('<h2>Kanjipedia Explanation</h2>');
-                            $('.kanjipedia').css('display', 'block');
+                            insertHTML('kanjipedia', "<div style='margin-bottom: 0;'>" + result2 + "</div>", url_base + result.slice(25), 'Kanjipedia');
                         }
                     });
                 }
@@ -153,9 +157,7 @@
                     */
 
 
-                    $('.weblio').html(result + '<a href="https://www.weblio.jp/content/' + vocab + '" target="_blank">Click for full entries</a>');
-                    $('.weblio').prepend('<h2>Weblio Explanation</h2>');
-                    $('.weblio').css('display', 'block');
+                    insertHTML('weblio', result, 'https://www.weblio.jp/content/' + vocab, 'Weblio');
                 }
             });
         }
