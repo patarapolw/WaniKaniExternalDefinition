@@ -17,6 +17,9 @@
 (function () {
     'use strict';
 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // Updating the kanji and vocab we are looking for
     var kanji;
     var vocab;
 
@@ -45,7 +48,20 @@
         updateInfo();
     });
 
+    var urlParts = url.split("/");
+    console.log(urlParts)
+    if (urlParts[urlParts.length - 2] === "kanji") {
+        kanji = urlParts[urlParts.length - 1];
+        updateInfo();
+    }
+    if (urlParts[urlParts.length - 2] === "vocabulary") {
+        vocab = urlParts[urlParts.length - 1].replace(/する|〜/, '');
+        updateInfo();
+    }
 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // Loading the information and updating the webpage
     function updateInfo() {
         if (kanji) {
             var url_base = 'https://www.kanjipedia.jp/';
@@ -135,16 +151,6 @@
         }
     }
 
-    var urlParts = url.split("/");
-    console.log(urlParts)
-    if (urlParts[urlParts.length - 2] === "kanji") {
-        kanji = urlParts[urlParts.length - 1];
-        updateInfo();
-    }
-    if (urlParts[urlParts.length - 2] === "vocabulary") {
-        vocab = urlParts[urlParts.length - 1].replace(/する|〜/, '');
-        updateInfo();
-    }
 
 
     var observer = new MutationObserver(function (mutations) {
