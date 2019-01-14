@@ -135,15 +135,23 @@
                     if (url.indexOf('vocabulary') !== -1) {
                         $('<section class="weblio"></section>').insertBefore('#note-meaning');
                     }
-                    $('#item-info-col2').prepend('<section class="weblio"></section>');
+                    if (url.indexOf('review') !== -1) {
+                        // #note-meaning is present but hidden on the review page
+                        $('<section class="weblio"></section>').insertBefore('#note-meaning');
+                    }
 
-                        $('#supplement-kan-meaning .col2').prepend('<section class="weblio"></section>');
                     if (url.indexOf('lesson') !== -1) {
                         $('#supplement-voc-meaning .col2').prepend('<section class="weblio"></section>');
-                        console.log('Prepended');
-                    } else {
+                    }
+
+                    /*
+                    $('#item-info-col2').prepend('<section class="weblio"></section>');
+
+                    else {
                         if ($.jStorage.get('questionType') === 'reading') $('.weblio').css('display', 'none');
                     }
+                    */
+
 
                     $('.weblio').html(result + '<a href="https://www.weblio.jp/content/' + vocab + '" target="_blank">Click for full entries</a>');
                     $('.weblio').prepend('<h2>Weblio Explanation</h2>');
