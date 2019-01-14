@@ -162,17 +162,19 @@
     }
 
 
-
+    // updating on review change, but only when on meaning page:
     var observer = new MutationObserver(function (mutations) {
         for (var i = 0; i < mutations.length; ++i) {
             for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
-                if (mutations[i].addedNodes[j].id === "item-info-meaning-mnemonic") {
+                var addedNode = mutations[i].addedNodes[j];
+                if (addedNode.id === "note-meaning" &&
+                    (addedNode.attributes.style === undefined || addedNode.attributes.style.nodeValue.indexOf("none") === -1)) {
                     updateInfo();
                 }
             }
         }
     });
-    observer.observe($('#item-info-col2').get(0), {childList: true});
+    observer.observe($('#item-info-col2').get(0), {childList: true, attributes: true});
 
     // setup observer to change kanji info box contents for subsequent items
     var observer2 = new MutationObserver(function (mutations) {
