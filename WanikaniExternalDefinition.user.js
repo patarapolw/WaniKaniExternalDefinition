@@ -102,13 +102,9 @@
                             var result2 = $('<div />').append(data.responseText.replace(regex, replacement)).find('#kanjiRightSection p').html();
                             if (result2 === undefined) result2 = "Definition not found.";
 
-                            // $('#item-info-col2').prepend('<section class="kanjipedia"></section>');
                             if (url.indexOf('lesson') !== -1) {
-                                $('#supplement-kan-meaning .col2').prepend('<section class="kanjipedia"></section>');
-                                console.log('Prepended kanji');
-                            } /* else {
-                                if ($.jStorage.get('questionType') === 'reading') $('.kanjipedia').css('display', 'none');
-                            } */
+                                $('<section class="kanjipedia"></section>').insertAfter('#supplement-kan-meaning-mne');
+                            }
 
                             insertHTML('kanjipedia', "<div style='margin-bottom: 0;'>" + result2 + "</div>", url_base + result.slice(25), 'Kanjipedia');
                         }
@@ -147,18 +143,10 @@
                             result = 'Kanji definition not found.';
                     }
 
+
                     if (url.indexOf('lesson') !== -1) {
-                        $('#supplement-voc-meaning .col2').prepend('<section class="weblio"></section>');
+                        $('<section class="weblio"></section>').insertAfter('#supplement-voc-meaning-exp');
                     }
-
-                    /*
-                    $('#item-info-col2').prepend('<section class="weblio"></section>');
-
-                    else {
-                        if ($.jStorage.get('questionType') === 'reading') $('.weblio').css('display', 'none');
-                    }
-                    */
-
 
                     insertHTML('weblio', result, url_vocab, 'Weblio');
                 }
