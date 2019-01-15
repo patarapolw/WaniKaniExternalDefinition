@@ -119,7 +119,7 @@
                     if (result === undefined) {
                         result = "Definition not found.";
                     }
-                    if (vocab.length === 1) {
+                    if (vocab && vocab.length === 1) {
                         var i = -1;
                         $.each($('<div />').append(data.responseText).find('.NetDicHead .midashigo'), function (index, value) {
                             var str = value.textContent;
