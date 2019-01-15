@@ -168,6 +168,27 @@
         }
     });
     observer.observe($('#item-info-col2').get(0), {childList: true, attributes: true});
+    // trigggering on lesson vocab change, but only when on meaning page:
+    new MutationObserver(function (mutations) {
+        console.log("lesson vocab change observer", mutations)
+        var i = 0;
+        if (mutations[i].target && mutations[i].target.id === "supplement-voc-meaning"
+            && mutations[i].target.style && JSON.stringify(mutations[i].target.style).indexOf("display: none") === -1) {
+            console.log("lesson vocab change observer is triggering")
+            updateInfo();
+        }
+    }).observe($('#supplement-voc-meaning').get(0), {attributes: true});
+
+    // trigggering on lesson kanji change, but only when on meaning page:
+    new MutationObserver(function (mutations) {
+        console.log("lesson kanji change observer", mutations)
+        var i = 0;
+        if (mutations[i].target && mutations[i].target.id === "supplement-kan-meaning"
+            && mutations[i].target.style && JSON.stringify(mutations[i].target.style).indexOf("display: none") === -1) {
+            console.log("lesson kanji change observer is triggering")
+            updateInfo();
+        }
+    }).observe($('#supplement-kan-meaning').get(0), {attributes: true});
 
     // setup observer to change kanji info box contents for subsequent items
     var observer2 = new MutationObserver(function (mutations) {
