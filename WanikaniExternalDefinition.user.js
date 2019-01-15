@@ -76,7 +76,8 @@
             }
 
             $('.' + clazz).html(html + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entries</a>');
-            $('.' + clazz).prepend('<h2>' + name + ' Explanation</h2>');
+            var h2_style = url.indexOf('lesson') !== -1 ? ' style="margin-top: 1.25em;" ' : "";
+            $('.' + clazz).prepend('<h2' + h2_style + '>' + name + ' Explanation</h2>');
             $('.' + clazz).css('display', 'block');
         }
 
