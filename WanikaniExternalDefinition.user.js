@@ -184,20 +184,6 @@
         }
     }).observe($('#supplement-kan-meaning').get(0), {attributes: true});
 
-    // setup observer to change kanji info box contents for subsequent items
-    var observer2 = new MutationObserver(function (mutations) {
-        var w = $('div#character').text().trim().replace(/する|〜/, '');
-        if (w.length === 1) {
-            kanji = w;
-        } else {
-            vocab = w;
-        }
-        $('.weblio').remove();
-        $('.kanjipedia').remove();
-        updateInfo();
-    });
-    observer2.observe($('div#character').get(0), {attributes: true, childList: true, characterData: true});
-
     var observer3 = new MutationObserver(function (mutations) {
         for (var i = 0; i < mutations.length; ++i) {
             for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
