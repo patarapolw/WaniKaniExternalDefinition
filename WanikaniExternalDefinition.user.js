@@ -17,6 +17,12 @@
 (function () {
     'use strict';
 
+    // redefine the crosslink CSS class from weblio:
+    var style = document.createElement('style');
+    style.innerHTML = '.crosslink { color: #666666; text-decoration: none;}';
+    document.getElementsByTagName('head')[0].appendChild(style);
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // Updating the kanji and vocab we are looking for
