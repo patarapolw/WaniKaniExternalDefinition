@@ -80,6 +80,10 @@
             $('.' + clazz).css('display', 'block');
         }
 
+        // First, remove any already existing entries:
+        $('.weblio').remove();
+        $('.kanjipedia').remove();
+
         if (kanji) {
             var url_base = 'https://www.kanjipedia.jp/';
             var regex = /img src="/g;
