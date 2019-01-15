@@ -29,13 +29,6 @@
     var kanji;
     var vocab;
 
-    var w = $('div#character').text().trim().replace(/する|〜/, '');
-    if (w.length === 1) {
-        kanji = w;
-    } else {
-        vocab = w;
-    }
-
     var url = document.URL;
     console.log("url", url);
 
