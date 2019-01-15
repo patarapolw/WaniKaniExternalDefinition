@@ -156,7 +156,7 @@
 
 
     // trigggering on review change, but only when on meaning page:
-    var observer = new MutationObserver(function (mutations) {
+    new MutationObserver(function (mutations) {
         for (var i = 0; i < mutations.length; ++i) {
             for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
                 var addedNode = mutations[i].addedNodes[j];
@@ -166,8 +166,8 @@
                 }
             }
         }
-    });
-    observer.observe($('#item-info-col2').get(0), {childList: true, attributes: true});
+    }).observe($('#item-info-col2').get(0), {childList: true, attributes: true});
+
     // trigggering on lesson vocab change, but only when on meaning page:
     new MutationObserver(function (mutations) {
         console.log("lesson vocab change observer", mutations)
