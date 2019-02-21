@@ -83,7 +83,7 @@
         if (kanji) {
             var url_base = 'https://www.kanjipedia.jp/';
             var regex = /img src="/g;
-            var replacement = "img width=\"16px\" src=\"" + url_base;
+            var replacement = 'img width="16px" src="' + url_base;
             console.log('Opening ' + url_base + 'search?k=' + kanji + '&kt=1&sk=leftHand');
             GM_xmlhttpRequest({
                 method: "GET",
