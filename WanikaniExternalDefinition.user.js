@@ -17,9 +17,11 @@
 (function () {
     'use strict';
 
+    var link_color = "color: #666666;";
+
     // redefine the crosslink CSS class from weblio:
     var style = document.createElement('style');
-    style.innerHTML = '.crosslink { color: #666666; text-decoration: none;}';
+    style.innerHTML = '.crosslink { ' + link_color + ' text-decoration: none;}';
     document.getElementsByTagName('head')[0].appendChild(style);
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -60,7 +62,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // Loading the information and updating the webpage
     function updateInfo() {
-        var hrefColor = ' style="color: darkgray;"';
+        var hrefColor = ' style="' + link_color + '"';
 
         function insertHTML(clazz, html, full_url, name) {
             if (url.indexOf('kanji') !== -1 || url.indexOf('vocabulary') !== -1 || url.indexOf('review') !== -1) {
