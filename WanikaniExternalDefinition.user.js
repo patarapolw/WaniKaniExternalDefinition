@@ -97,8 +97,8 @@
                         onload: function (data) {
                             var result2 = $('<div />').append(data.responseText.replace(regex, replacement)).find('#kanjiRightSection p').html();
                             if (result2 === undefined) result2 = "Definition not found.";
-                            var regexSpace = /\s+(?=([^<]*<[^<]*>)*[^>]*$)/g;
-                            // result2 = result2.replace(regexSpace, "<br/>");
+                            var regexSpaceBeforeCircledNumber = / ([\u2460-\u2473])/g;
+                            result2 = result2.replace(regexSpaceBeforeCircledNumber, "<br/>$1");
 
                             if (url.indexOf('lesson') !== -1) {
                                 $('<section class="kanjipedia"></section>').insertAfter('#supplement-kan-meaning-mne');
