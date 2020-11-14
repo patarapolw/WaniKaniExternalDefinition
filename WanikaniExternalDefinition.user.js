@@ -135,40 +135,43 @@
 
 
     // trigggering on review change, but only when on meaning page:
-    new MutationObserver(function (mutations) {
-        for (var i = 0; i < mutations.length; ++i) {
-            for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
-                var addedNode = mutations[i].addedNodes[j];
-                if (addedNode.id === "note-meaning" &&
-                    (addedNode.attributes.style === undefined || addedNode.attributes.style.nodeValue.indexOf("none") === -1)) {
-                    updateInfo();
+    if($('#item-info-col2').get(0)) {  // mutation observer throws an error if the node is undefined
+        new MutationObserver(function (mutations) {
+            for (var i = 0; i < mutations.length; ++i) {
+                for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
+                    var addedNode = mutations[i].addedNodes[j];
+                    if (addedNode.id === "note-meaning" &&
+                        (addedNode.attributes.style === undefined || addedNode.attributes.style.nodeValue.indexOf("none") === -1)) {
+                        updateInfo();
+                    }
                 }
             }
-        }
-    }).observe($('#item-info-col2').get(0), {childList: true, attributes: true});
+        }).observe($('#item-info-col2').get(0), {childList: true, attributes: true});
+    }
 
     // trigggering on lesson vocab change, but only when on meaning page:
-    new MutationObserver(function (mutations) {
-        console.log("lesson vocab change observer", mutations)
-        var i = 0;
-        if (mutations[i].target && mutations[i].target.id === "supplement-voc-meaning"
-            && mutations[i].target.style && JSON.stringify(mutations[i].target.style).indexOf("display: none") === -1) {
-            console.log("lesson vocab change observer is triggering")
-            updateInfo();
-        }
-    }).observe($('#supplement-voc-meaning').get(0), {attributes: true});
+    if($('#supplement-voc-meaning').get(0)) { // mutation observer throws an error if the node is undefined
+        new MutationObserver(function (mutations) {
+            var i = 0;
+            if (mutations[i].target && mutations[i].target.id === "supplement-voc-meaning"
+                && mutations[i].target.style && JSON.stringify(mutations[i].target.style).indexOf("display: none") === -1) {
+                updateInfo();
+            }
+        }).observe($('#supplement-voc-meaning').get(0), {attributes: true});
+    }
 
     // trigggering on lesson kanji change, but only when on meaning page:
-    new MutationObserver(function (mutations) {
-        console.log("lesson kanji change observer", mutations)
-        var i = 0;
-        if (mutations[i].target && mutations[i].target.id === "supplement-kan-meaning"
-            && mutations[i].target.style && JSON.stringify(mutations[i].target.style).indexOf("display: none") === -1) {
-            console.log("lesson kanji change observer is triggering")
-            updateInfo();
-        }
-    }).observe($('#supplement-kan-meaning').get(0), {attributes: true});
+    if($('#supplement-kan-meaning').get(0)) { // mutation observer throws an error if the node is undefined
+        new MutationObserver(function (mutations) {
+            var i = 0;
+            if (mutations[i].target && mutations[i].target.id === "supplement-kan-meaning"
+                && mutations[i].target.style && JSON.stringify(mutations[i].target.style).indexOf("display: none") === -1) {
+                updateInfo();
+            }
+        }).observe($('#supplement-kan-meaning').get(0), {attributes: true});
+    }
 
+    /*
     var observer3 = new MutationObserver(function (mutations) {
         for (var i = 0; i < mutations.length; ++i) {
             for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
@@ -180,6 +183,7 @@
         }
     });
     observer3.observe($('#item-info-meaning-mnemonic').get(0), {attributes: true});
+    */
 
     function nthIndex(str, pat, n) {
         var L = str.length, i = -1;
