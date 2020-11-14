@@ -117,7 +117,7 @@
                 method: "GET",
                 url: url_vocab,
                 onload: function (data) {
-                    var result = $('<div />').append(data.responseText).find('.kiji > div').html();
+                    var result = "<div style='margin-bottom: 10px'>" + $('<div />').append(data.responseText).find('.kiji > div').html() + "</div>";
                     if (result === undefined) {
                         result = "Definition not found.";
                     }
