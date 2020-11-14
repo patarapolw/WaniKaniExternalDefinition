@@ -121,25 +121,6 @@
                     if (result === undefined) {
                         result = "Definition not found.";
                     }
-                    if (vocab && vocab.length === 1) {
-                        var i = -1;
-                        $.each($('<div />').append(data.responseText).find('.NetDicHead .midashigo'), function (index, value) {
-                            var str = value.textContent;
-                            if (str.indexOf('漢字') !== -1) i = index;
-                        });
-                        console.log(i);
-
-                        var full_result = $('<div />').append(data.responseText).find('.NetDicBody:nth-child(' + (3 * i + 2) + ')').html();
-                        if (i !== -1) {
-                            result = '';
-                            for (var j = 0; result.length < 200 && nthIndex(full_result, vocab, j) < result.length;) {
-                                j++;
-                                result = full_result.substring(nthIndex(full_result, vocab, j) - 2, full_result.indexOf('【 ', nthIndex(full_result, vocab, j)));
-                            }
-                            console.log(result.length);
-                        } else
-                            result = 'Kanji definition not found.';
-                    }
 
 
                     if (url.indexOf('lesson') !== -1) {
