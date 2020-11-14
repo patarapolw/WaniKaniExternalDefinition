@@ -32,10 +32,8 @@
     var vocab;
 
     var url = document.URL;
-    console.log("url", url);
 
     $.jStorage.listenKeyChange('currentItem', function () {
-        console.log("currentItem", current)
         var current = $.jStorage.get('currentItem');
         kanji = current.kan;
         vocab = current.voc ? current.voc.replace(/する|〜/, '') : undefined;
@@ -48,7 +46,6 @@
     });
 
     var urlParts = url.split("/");
-    console.log(urlParts)
     if (urlParts[urlParts.length - 2] === "kanji") {
         kanji = urlParts[urlParts.length - 1];
         updateInfo();
@@ -66,7 +63,6 @@
 
         function insertHTML(clazz, html, full_url, name) {
             if (url.indexOf('kanji') !== -1 || url.indexOf('vocabulary') !== -1 || url.indexOf('review') !== -1) {
-                console.log("inserted on item or review page")
                 $('<section class="' + clazz + '"></section>').insertBefore('#note-meaning');
             }
 
@@ -84,13 +80,11 @@
             var url_base = 'https://www.kanjipedia.jp/';
             var regex = /img src="/g;
             var replacement = 'img width="16px" src="' + url_base;
-            console.log('Opening ' + url_base + 'search?k=' + kanji + '&kt=1&sk=leftHand');
             GM_xmlhttpRequest({
                 method: "GET",
                 url: url_base + 'search?k=' + kanji + '&kt=1&sk=leftHand',
                 onload: function (data) {
                     var result = $('<div />').append(data.responseText.replace(regex, replacement)).find('#resultKanjiList a')[0].href;
-                    console.log('Opening ' + url_base + result.slice(25));
                     GM_xmlhttpRequest({
                         method: "GET",
                         url: url_base + result.slice(25),
@@ -112,7 +106,6 @@
         }
         if (vocab) {
             var url_vocab = 'https://www.weblio.jp/content/' + vocab;
-            console.log('Opening ' + url_vocab);
             GM_xmlhttpRequest({
                 method: "GET",
                 url: url_vocab,
