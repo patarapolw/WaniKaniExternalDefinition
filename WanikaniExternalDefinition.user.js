@@ -117,7 +117,7 @@
                 method: "GET",
                 url: url_vocab,
                 onload: function (data) {
-                    var result = $('<div />').append(data.responseText).find('.NetDicBody').html();
+                    var result = $('<div />').append(data.responseText).find('.kiji > div').html();
                     if (result === undefined) {
                         result = "Definition not found.";
                     }
