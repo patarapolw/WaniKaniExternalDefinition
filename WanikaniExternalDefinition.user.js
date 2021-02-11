@@ -61,9 +61,9 @@
     function updateInfo() {
         var hrefColor = ' style="' + link_color + '"';
 
-        function insertDefinition(clazz, html, full_url, name, lessonInsertAfter) {
+        function insertDefinition(html, full_url, name, lessonInsertAfter) {
             var h2_style = url.indexOf('lesson') !== -1 ? ' style="margin-top: 1.25em;" ' : "";
-            var newHtml = '<section class="' + clazz + '">'
+            var newHtml = '<section>'
                 + '<h2' + h2_style + '>' + name + ' Explanation</h2>'
                 + html + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entry</a>'
                 + '</section>';
@@ -110,7 +110,7 @@
 
                             var kanjiDefinition = (rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.")
                                 .replace(regexSpaceBeforeCircledNumber, "<br/>$1");
-                            insertDefinition('kanjipedia', "<div style='margin-bottom: 0;'>" + kanjiDefinition + "</div>",
+                            insertDefinition("<div style='margin-bottom: 0.5em;'>" + kanjiDefinition + "</div>",
                                 kanjiPageURL, 'Kanjipedia', '#supplement-kan-meaning-mne');
                         }
                     });
@@ -128,7 +128,7 @@
                             return $('script', this).length === 0
                         }).html() || "Definition not found.";
 
-                    insertDefinition('weblio', "<div style='margin-bottom: 10px'>" + vocabDefinition + "</div>",
+                    insertDefinition("<div style='margin-bottom: 10px'>" + vocabDefinition + "</div>",
                         vocabPageURL, 'Weblio', '#supplement-voc-meaning-exp');
                 }
             });
