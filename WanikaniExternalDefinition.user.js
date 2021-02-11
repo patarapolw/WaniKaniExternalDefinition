@@ -74,7 +74,15 @@
             if (url.indexOf('lesson') !== -1) {
                 $(lessonInsertAfter + ":visible").after(newHtml);
             }
+        }
 
+        function insertReading(kanjiInfo) {
+            if (url.indexOf('kanji') !== -1) {
+                $(".span4").removeClass("span4").addClass("span3").last().after('<div class="span3"><h3>Kanjipedia</h3>' + kanjiInfo + '</div>');
+            }
+            if (url.indexOf('review') !== -1) {
+                $('#item-info #item-info-col1 #item-info-reading:visible').after("<section><h2>Kanjipedia</h2>" + kanjiInfo + "</section>");
+            }
         }
 
         // First, remove any already existing entries:
@@ -100,16 +108,9 @@
                         onload: function (data) {
                             var rawResponseNode = $('<div />').append(data.responseText.replace(regexImgSrc, replacementImgSrc).replace(regexTxtNormal, replacementTxtNormal));
 
-                            var kanjiInfo = rawResponseNode.find('#kanjiLeftSection #onkunList').html();
-                            if (url.indexOf('kanji') !== -1) {
-                                $(".span4").removeClass("span4").addClass("span3").last().after('<div class="span3"><h3>Kanjipedia</h3>' + kanjiInfo + '</div>');
-                            }
-                            if (url.indexOf('review') !== -1) {
-                                $('#item-info #item-info-col1 #item-info-reading:visible').after("<section><h2>Kanjipedia</h2>" + kanjiInfo + "</section>");
-                            }
-
                             var kanjiDefinition = (rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.")
                                 .replace(regexSpaceBeforeCircledNumber, "<br/>$1");
+                            insertReading(rawResponseNode.find('#kanjiLeftSection #onkunList').html());
                             insertDefinition("<div style='margin-bottom: 0.5em;'>" + kanjiDefinition + "</div>",
                                 kanjiPageURL, 'Kanjipedia', '#supplement-kan-meaning-mne');
                         }
