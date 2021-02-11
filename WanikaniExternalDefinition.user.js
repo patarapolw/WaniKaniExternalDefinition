@@ -106,11 +106,15 @@
                         method: "GET",
                         url: kanjiPageURL,
                         onload: function (data) {
-                            var rawResponseNode = $('<div />').append(data.responseText.replace(regexImgSrc, replacementImgSrc).replace(regexTxtNormal, replacementTxtNormal));
+                            var rawResponseNode = $('<div />').append(data.responseText
+                                .replace(regexImgSrc, replacementImgSrc)
+                                .replace(regexTxtNormal, replacementTxtNormal)
+                                .replace(regexSpaceBeforeCircledNumber, "<br/>$1")
+                            );
 
-                            var kanjiDefinition = (rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.")
-                                .replace(regexSpaceBeforeCircledNumber, "<br/>$1");
                             insertReading(rawResponseNode.find('#kanjiLeftSection #onkunList').html());
+
+                            var kanjiDefinition = rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.";
                             insertDefinition("<div style='margin-bottom: 0.5em;'>" + kanjiDefinition + "</div>",
                                 kanjiPageURL, 'Kanjipedia', '#supplement-kan-meaning-mne');
                         }
