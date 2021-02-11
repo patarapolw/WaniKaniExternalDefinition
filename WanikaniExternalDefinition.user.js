@@ -62,18 +62,19 @@
         var hrefColor = ' style="' + link_color + '"';
 
         function insertDefinition(clazz, html, full_url, name, lessonInsertAfter) {
+            var h2_style = url.indexOf('lesson') !== -1 ? ' style="margin-top: 1.25em;" ' : "";
+            var newHtml = '<section class="' + clazz + '">'
+                + '<h2' + h2_style + '>' + name + ' Explanation</h2>'
+                + html + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entry</a>'
+                + '</section>';
+
             if (url.indexOf('kanji') !== -1 || url.indexOf('vocabulary') !== -1 || url.indexOf('review') !== -1) {
-                $('#note-meaning:visible').before('<section class="' + clazz + '"></section>');
+                $('#note-meaning:visible').before(newHtml);
             }
             if (url.indexOf('lesson') !== -1) {
-                $(lessonInsertAfter + ":visible").after('<section class="' + clazz + '"></section>');
+                $(lessonInsertAfter + ":visible").after(newHtml);
             }
 
-            var newNode = $('.' + clazz);
-            newNode.html(html + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entry</a>');
-            var h2_style = url.indexOf('lesson') !== -1 ? ' style="margin-top: 1.25em;" ' : "";
-            newNode.prepend('<h2' + h2_style + '>' + name + ' Explanation</h2>');
-            newNode.css('display', 'block');
         }
 
         // First, remove any already existing entries:
