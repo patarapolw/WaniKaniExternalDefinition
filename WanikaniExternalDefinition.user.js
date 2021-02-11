@@ -84,6 +84,8 @@
             var kanjipediaUrlBase = 'https://www.kanjipedia.jp/';
             var regexImgSrc = /img src="/g;
             var replacementImgSrc = 'img width="16px" src="' + kanjipediaUrlBase;
+            var regexTxtNormal = /class="txtNormal">/g;
+            var replacementTxtNormal = '>.';
             var regexSpaceBeforeCircledNumber = / ([\u2460-\u2473])/g;
             GM_xmlhttpRequest({
                 method: "GET",
@@ -95,8 +97,11 @@
                         method: "GET",
                         url: kanjiPageURL,
                         onload: function (data) {
-                            var rawResponseNode = $('<div />').append(data.responseText.replace(regexImgSrc, replacementImgSrc));
+                            var rawResponseNode = $('<div />').append(data.responseText.replace(regexImgSrc, replacementImgSrc).replace(regexTxtNormal, replacementTxtNormal));
 
+                            var kanjiInfo = rawResponseNode.find('#kanjiLeftSection #onkunList').html();
+                            if (url.indexOf('kanji') !== -1) {
+                                $(".span4").removeClass("span4").addClass("span3").last().after('<div class="span3"><h3>Kanjipedia</h3>' + kanjiInfo + '</div>');
                             }
 
                             var kanjiDefinition = (rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.")
