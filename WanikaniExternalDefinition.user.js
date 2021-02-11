@@ -63,10 +63,10 @@
 
         function insertDefinition(clazz, html, full_url, name, lessonInsertAfter) {
             if (url.indexOf('kanji') !== -1 || url.indexOf('vocabulary') !== -1 || url.indexOf('review') !== -1) {
-                $('<section class="' + clazz + '"></section>').insertBefore('#note-meaning');
+                $('#note-meaning:visible').before('<section class="' + clazz + '"></section>');
             }
             if (url.indexOf('lesson') !== -1) {
-                $('<section class="' + clazz + '"></section>').insertAfter(lessonInsertAfter);
+                $(lessonInsertAfter + ":visible").after('<section class="' + clazz + '"></section>');
             }
 
             var newNode = $('.' + clazz);
@@ -102,6 +102,9 @@
                             var kanjiInfo = rawResponseNode.find('#kanjiLeftSection #onkunList').html();
                             if (url.indexOf('kanji') !== -1) {
                                 $(".span4").removeClass("span4").addClass("span3").last().after('<div class="span3"><h3>Kanjipedia</h3>' + kanjiInfo + '</div>');
+                            }
+                            if (url.indexOf('review') !== -1) {
+                                $('#item-info #item-info-col1 #item-info-reading:visible').after("<section><h2>Kanjipedia</h2>" + kanjiInfo + "</section>");
                             }
 
                             var kanjiDefinition = (rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.")
@@ -153,9 +156,9 @@
                 for (var i = 0; i < mutations.length; ++i) {
                     for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
                         var addedNode = mutations[i].addedNodes[j];
-                        if (addedNode.id === nodeId &&
-                            (addedNode.attributes.style === undefined || addedNode.attributes.style.nodeValue.indexOf("none") === -1)) {
+                        if (addedNode.id === nodeId && addedNode.style.display !== "none") {
                             updateInfo();
+                            return; // we found a node we want to update -> stop iterating
                         }
                     }
                 }
@@ -163,13 +166,16 @@
         }
     }
 
-    // trigggering on review change, but only when on meaning page:
+    // on review meaning page (vocab and kanji):
     triggerOnReview('item-info-col2', "note-meaning");
 
-    // trigggering on lesson vocab change, but only when on meaning page:
+    // on review reading page (vocab and kanji, but we change the page only when kanji)
+    triggerOnReview('item-info-col1', "item-info-reading");
+
+    // on lesson vocab meaning page:
     triggerOnLesson("supplement-voc-meaning");
 
-    // trigggering on lesson kanji change, but only when on meaning page:
+    // on lesson kanji meaning page:
     triggerOnLesson("supplement-kan-meaning");
 
 })();
