@@ -69,10 +69,11 @@
                 $('<section class="' + clazz + '"></section>').insertAfter(lessonInsertAfter);
             }
 
-            $('.' + clazz).html(html + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entry</a>');
+            var newNode = $('.' + clazz);
+            newNode.html(html + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entry</a>');
             var h2_style = url.indexOf('lesson') !== -1 ? ' style="margin-top: 1.25em;" ' : "";
-            $('.' + clazz).prepend('<h2' + h2_style + '>' + name + ' Explanation</h2>');
-            $('.' + clazz).css('display', 'block');
+            newNode.prepend('<h2' + h2_style + '>' + name + ' Explanation</h2>');
+            newNode.css('display', 'block');
         }
 
         // First, remove any already existing entries:
@@ -80,16 +81,16 @@
         $('.kanjipedia').remove();
 
         if (kanji) {
-            var url_base = 'https://www.kanjipedia.jp/';
+            var kanjipediaUrlBase = 'https://www.kanjipedia.jp/';
             var regexImgSrc = /img src="/g;
-            var replacementImgSrc = 'img width="16px" src="' + url_base;
+            var replacementImgSrc = 'img width="16px" src="' + kanjipediaUrlBase;
             var regexSpaceBeforeCircledNumber = / ([\u2460-\u2473])/g;
             GM_xmlhttpRequest({
                 method: "GET",
-                url: url_base + 'search?k=' + kanji + '&kt=1&sk=leftHand',
+                url: kanjipediaUrlBase + 'search?k=' + kanji + '&kt=1&sk=leftHand',
                 onload: function (data) {
                     var rawKanjiURL = $('<div />').append(data.responseText.replace(regexImgSrc, replacementImgSrc)).find('#resultKanjiList a')[0].href;
-                    var kanjiPageURL = url_base + rawKanjiURL.slice(25);
+                    var kanjiPageURL = kanjipediaUrlBase + rawKanjiURL.slice(25);
                     GM_xmlhttpRequest({
                         method: "GET",
                         url: kanjiPageURL,
@@ -125,56 +126,45 @@
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // Triggering updates on lessons and reviews
 
-    // trigggering on review change, but only when on meaning page:
-    if($('#item-info-col2').get(0)) {  // mutation observer throws an error if the node is undefined
-        new MutationObserver(function (mutations) {
-            for (var i = 0; i < mutations.length; ++i) {
-                for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
-                    var addedNode = mutations[i].addedNodes[j];
-                    if (addedNode.id === "note-meaning" &&
-                        (addedNode.attributes.style === undefined || addedNode.attributes.style.nodeValue.indexOf("none") === -1)) {
-                        updateInfo();
+    function triggerOnLesson(targetId) {
+        var targetNode = $('#' + targetId).get(0);
+        if(targetNode) { // mutation observer throws an error if the node is undefined
+            new MutationObserver(function (mutations) {
+                if (mutations[0].target && mutations[0].target.id === targetId
+                    && mutations[0].target.style && JSON.stringify(mutations[0].target.style).indexOf("display: none") === -1) {
+                    updateInfo();
+                }
+            }).observe(targetNode, {attributes: true});
+        }
+    }
+
+    function triggerOnReview(targetId, nodeId) {
+        var targetNode = $('#' + targetId).get(0);
+        if(targetNode) { // mutation observer throws an error if the node is undefined
+            new MutationObserver(function (mutations) {
+                for (var i = 0; i < mutations.length; ++i) {
+                    for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
+                        var addedNode = mutations[i].addedNodes[j];
+                        if (addedNode.id === nodeId &&
+                            (addedNode.attributes.style === undefined || addedNode.attributes.style.nodeValue.indexOf("none") === -1)) {
+                            updateInfo();
+                        }
                     }
                 }
-            }
-        }).observe($('#item-info-col2').get(0), {childList: true, attributes: true});
+            }).observe(targetNode, {childList: true, attributes: true});
+        }
     }
+
+    // trigggering on review change, but only when on meaning page:
+    triggerOnReview('item-info-col2', "note-meaning");
 
     // trigggering on lesson vocab change, but only when on meaning page:
-    if($('#supplement-voc-meaning').get(0)) { // mutation observer throws an error if the node is undefined
-        new MutationObserver(function (mutations) {
-            var i = 0;
-            if (mutations[i].target && mutations[i].target.id === "supplement-voc-meaning"
-                && mutations[i].target.style && JSON.stringify(mutations[i].target.style).indexOf("display: none") === -1) {
-                updateInfo();
-            }
-        }).observe($('#supplement-voc-meaning').get(0), {attributes: true});
-    }
+    triggerOnLesson("supplement-voc-meaning");
 
     // trigggering on lesson kanji change, but only when on meaning page:
-    if($('#supplement-kan-meaning').get(0)) { // mutation observer throws an error if the node is undefined
-        new MutationObserver(function (mutations) {
-            var i = 0;
-            if (mutations[i].target && mutations[i].target.id === "supplement-kan-meaning"
-                && mutations[i].target.style && JSON.stringify(mutations[i].target.style).indexOf("display: none") === -1) {
-                updateInfo();
-            }
-        }).observe($('#supplement-kan-meaning').get(0), {attributes: true});
-    }
-
-    /*
-    var observer3 = new MutationObserver(function (mutations) {
-        for (var i = 0; i < mutations.length; ++i) {
-            for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
-                if (mutations[i].addedNodes[j].style.display === "block") {
-                    $('.weblio').css('display', 'block');
-                    $('.kanjipedia').css('display', 'block');
-                }
-            }
-        }
-    });
-    observer3.observe($('#item-info-meaning-mnemonic').get(0), {attributes: true});
-    */
+    triggerOnLesson("supplement-kan-meaning");
 
 })();
