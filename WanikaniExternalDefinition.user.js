@@ -78,27 +78,26 @@
 
         if (kanji) {
             var url_base = 'https://www.kanjipedia.jp/';
-            var regex = /img src="/g;
-            var replacement = 'img width="16px" src="' + url_base;
+            var regexImgSrc = /img src="/g;
+            var replacementImgSrc = 'img width="16px" src="' + url_base;
             GM_xmlhttpRequest({
                 method: "GET",
                 url: url_base + 'search?k=' + kanji + '&kt=1&sk=leftHand',
                 onload: function (data) {
-                    var result = $('<div />').append(data.responseText.replace(regex, replacement)).find('#resultKanjiList a')[0].href;
+                    var result = $('<div />').append(data.responseText.replace(regexImgSrc, replacementImgSrc)).find('#resultKanjiList a')[0].href;
                     GM_xmlhttpRequest({
                         method: "GET",
                         url: url_base + result.slice(25),
                         onload: function (data) {
-                            var result2 = $('<div />').append(data.responseText.replace(regex, replacement)).find('#kanjiRightSection p').html();
-                            if (result2 === undefined) result2 = "Definition not found.";
-                            var regexSpaceBeforeCircledNumber = / ([\u2460-\u2473])/g;
-                            result2 = result2.replace(regexSpaceBeforeCircledNumber, "<br/>$1");
+                            var rawResponseNode = $('<div />').append(data.responseText.replace(regexImgSrc, replacementImgSrc));
 
+                            var kanjiDefinition = rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.";
+                            var regexSpaceBeforeCircledNumber = / ([\u2460-\u2473])/g;
+                            kanjiDefinition = kanjiDefinition.replace(regexSpaceBeforeCircledNumber, "<br/>$1");
                             if (url.indexOf('lesson') !== -1) {
                                 $('<section class="kanjipedia"></section>').insertAfter('#supplement-kan-meaning-mne');
                             }
-
-                            insertHTML('kanjipedia', "<div style='margin-bottom: 0;'>" + result2 + "</div>", url_base + result.slice(25), 'Kanjipedia');
+                            insertHTML('kanjipedia', "<div style='margin-bottom: 0;'>" + kanjiDefinition + "</div>", url_base + result.slice(25), 'Kanjipedia');
                         }
                     });
                 }
@@ -110,16 +109,12 @@
                 method: "GET",
                 url: url_vocab,
                 onload: function (data) {
-                    var result = "<div style='margin-bottom: 10px'>"
-                        + $('<div />').append(data.responseText).find('.kiji > div').filter(
-                            function() {
-                                return $('script', this).length === 0
-                            }
-                        ).html() + "</div>";
-                    if (result === undefined) {
-                        result = "Definition not found.";
-                    }
-
+                    var rawResult = $('<div />').append(data.responseText).find('.kiji > div').filter(
+                        function() {
+                            return $('script', this).length === 0
+                        }
+                    ).html() || "Definition not found.";
+                    var result = "<div style='margin-bottom: 10px'>" + rawResult + "</div>";
 
                     if (url.indexOf('lesson') !== -1) {
                         $('<section class="weblio"></section>').insertAfter('#supplement-voc-meaning-exp');
@@ -183,12 +178,4 @@
     observer3.observe($('#item-info-meaning-mnemonic').get(0), {attributes: true});
     */
 
-    function nthIndex(str, pat, n) {
-        var L = str.length, i = -1;
-        while (n-- && i++ < L) {
-            i = str.indexOf(pat, i);
-            if (i < 0) break;
-        }
-        return i;
-    }
 })();
