@@ -61,9 +61,12 @@
     function updateInfo() {
         var hrefColor = ' style="' + link_color + '"';
 
-        function insertHTML(clazz, html, full_url, name) {
+        function insertDefinition(clazz, html, full_url, name, lessonInsertAfter) {
             if (url.indexOf('kanji') !== -1 || url.indexOf('vocabulary') !== -1 || url.indexOf('review') !== -1) {
                 $('<section class="' + clazz + '"></section>').insertBefore('#note-meaning');
+            }
+            if (url.indexOf('lesson') !== -1) {
+                $('<section class="' + clazz + '"></section>').insertAfter(lessonInsertAfter);
             }
 
             $('.' + clazz).html(html + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entry</a>');
@@ -80,47 +83,43 @@
             var url_base = 'https://www.kanjipedia.jp/';
             var regexImgSrc = /img src="/g;
             var replacementImgSrc = 'img width="16px" src="' + url_base;
+            var regexSpaceBeforeCircledNumber = / ([\u2460-\u2473])/g;
             GM_xmlhttpRequest({
                 method: "GET",
                 url: url_base + 'search?k=' + kanji + '&kt=1&sk=leftHand',
                 onload: function (data) {
-                    var result = $('<div />').append(data.responseText.replace(regexImgSrc, replacementImgSrc)).find('#resultKanjiList a')[0].href;
+                    var rawKanjiURL = $('<div />').append(data.responseText.replace(regexImgSrc, replacementImgSrc)).find('#resultKanjiList a')[0].href;
+                    var kanjiPageURL = url_base + rawKanjiURL.slice(25);
                     GM_xmlhttpRequest({
                         method: "GET",
-                        url: url_base + result.slice(25),
+                        url: kanjiPageURL,
                         onload: function (data) {
                             var rawResponseNode = $('<div />').append(data.responseText.replace(regexImgSrc, replacementImgSrc));
 
-                            var kanjiDefinition = rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.";
-                            var regexSpaceBeforeCircledNumber = / ([\u2460-\u2473])/g;
-                            kanjiDefinition = kanjiDefinition.replace(regexSpaceBeforeCircledNumber, "<br/>$1");
-                            if (url.indexOf('lesson') !== -1) {
-                                $('<section class="kanjipedia"></section>').insertAfter('#supplement-kan-meaning-mne');
                             }
-                            insertHTML('kanjipedia', "<div style='margin-bottom: 0;'>" + kanjiDefinition + "</div>", url_base + result.slice(25), 'Kanjipedia');
+
+                            var kanjiDefinition = (rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.")
+                                .replace(regexSpaceBeforeCircledNumber, "<br/>$1");
+                            insertDefinition('kanjipedia', "<div style='margin-bottom: 0;'>" + kanjiDefinition + "</div>",
+                                kanjiPageURL, 'Kanjipedia', '#supplement-kan-meaning-mne');
                         }
                     });
                 }
             });
         }
         if (vocab) {
-            var url_vocab = 'https://www.weblio.jp/content/' + vocab;
+            var vocabPageURL = 'https://www.weblio.jp/content/' + vocab;
             GM_xmlhttpRequest({
                 method: "GET",
-                url: url_vocab,
+                url: vocabPageURL,
                 onload: function (data) {
-                    var rawResult = $('<div />').append(data.responseText).find('.kiji > div').filter(
+                    var vocabDefinition = $('<div />').append(data.responseText).find('.kiji > div').filter(
                         function() {
                             return $('script', this).length === 0
-                        }
-                    ).html() || "Definition not found.";
-                    var result = "<div style='margin-bottom: 10px'>" + rawResult + "</div>";
+                        }).html() || "Definition not found.";
 
-                    if (url.indexOf('lesson') !== -1) {
-                        $('<section class="weblio"></section>').insertAfter('#supplement-voc-meaning-exp');
-                    }
-
-                    insertHTML('weblio', result, url_vocab, 'Weblio');
+                    insertDefinition('weblio', "<div style='margin-bottom: 10px'>" + vocabDefinition + "</div>",
+                        vocabPageURL, 'Weblio', '#supplement-voc-meaning-exp');
                 }
             });
         }
