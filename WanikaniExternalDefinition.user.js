@@ -62,11 +62,13 @@
     function updateInfo() {
         var hrefColor = ' style="' + link_color + '"';
 
-        function insertDefinition(html, full_url, name, lessonInsertAfter) {
+        function insertDefinition(definition, full_url, name, lessonInsertAfter) {
+
             var h2_style = url.indexOf('lesson') !== -1 ? ' style="margin-top: 1.25em;" ' : "";
             var newHtml = '<section class="' + entryClazz + '">'
                 + '<h2' + h2_style + '>' + name + ' Explanation</h2>'
-                + html + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entry</a>'
+                + "<div style='margin-bottom: 0.5em;'>" + (definition || "Definition not found.") + "</div>"
+                + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entry</a>'
                 + '</section>';
 
             if (url.indexOf('kanji') !== -1 || url.indexOf('vocabulary') !== -1 || url.indexOf('review') !== -1) {
@@ -106,20 +108,17 @@
                         method: "GET",
                         url: kanjiPageURL,
                         onload: function (data) {
+                            // First, remove any already existing entries to avoid displaying entries for other items:
+                            $('.' + entryClazz).remove();
+
                             var rawResponseNode = $('<div />').append(data.responseText
                                 .replace(regexImgSrc, replacementImgSrc)
                                 .replace(regexTxtNormal, replacementTxtNormal)
                                 .replace(regexSpaceBeforeCircledNumber, "<br/>$1")
                             );
 
-                            // First, remove any already existing entries to avoid displaying entries for other items:
-                            $('.' + entryClazz).remove();
-
                             insertReading(rawResponseNode.find('#kanjiLeftSection #onkunList').html());
-
-                            var kanjiDefinition = rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.";
-                            insertDefinition("<div style='margin-bottom: 0.5em;'>" + kanjiDefinition + "</div>",
-                                kanjiPageURL, 'Kanjipedia', '#supplement-kan-meaning-mne');
+                            insertDefinition(rawResponseNode.find('#kanjiRightSection p').html(), kanjiPageURL, 'Kanjipedia', '#supplement-kan-meaning-mne');
                         }
                     });
                 }
@@ -131,16 +130,11 @@
                 method: "GET",
                 url: vocabPageURL,
                 onload: function (data) {
-                    var vocabDefinition = $('<div />').append(data.responseText).find('.kiji > div').filter(
-                        function() {
-                            return $('script', this).length === 0
-                        }).html() || "Definition not found.";
-
                     // First, remove any already existing entries to avoid displaying entries for other items:
                     $('.' + entryClazz).remove();
 
-                    insertDefinition("<div style='margin-bottom: 10px'>" + vocabDefinition + "</div>",
-                        vocabPageURL, 'Weblio', '#supplement-voc-meaning-exp');
+                    var vocabDefinition = $('<div />').append(data.responseText).find('.kiji > div').filter(function() {return $('script', this).length === 0}).html();
+                    insertDefinition(vocabDefinition, vocabPageURL, 'Weblio', '#supplement-voc-meaning-exp');
                 }
             });
         }
