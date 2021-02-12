@@ -84,6 +84,9 @@
             if (url.indexOf('review') !== -1) {
                 $('#item-info #item-info-col1 #item-info-reading:visible').after('<section class="'+entryClazz+'"><h2>Kanjipedia</h2>' + kanjiInfo + "</section>");
             }
+            if (url.indexOf('lesson') !== -1) {
+                $('#supplement-kan-reading:visible .pure-u-1-4 > div').first().after('<span class="'+entryClazz+'"><h2 style="margin-top: 1.25em;">Kanjipedia</h2>' + kanjiInfo + "</span>");
+            }
         }
 
         if (kanji) {
@@ -187,5 +190,8 @@
 
     // on lesson kanji meaning page:
     triggerOnLesson("supplement-kan-meaning");
+
+    // on lesson kanji reading page:
+    triggerOnLesson("supplement-kan-reading");
 
 })();
