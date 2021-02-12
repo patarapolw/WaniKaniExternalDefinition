@@ -150,8 +150,9 @@
         var targetNode = $('#' + targetId).get(0);
         if(targetNode) { // mutation observer throws an error if the node is undefined
             new MutationObserver(function (mutations) {
-                if (mutations[0].target && mutations[0].target.id === targetId
-                    && mutations[0].target.style && JSON.stringify(mutations[0].target.style).indexOf("display: none") === -1) {
+                var currentNode = mutations[0].target;
+                if (currentNode && currentNode.id === targetId
+                    && currentNode.style && currentNode.style.display !== "none") {
                     updateInfo();
                 }
             }).observe(targetNode, {attributes: true});
