@@ -18,6 +18,7 @@
     'use strict';
 
     var link_color = "color: #666666;";
+    var entryClazz = "wkexternaldefinition";
 
     // redefine the crosslink CSS class from weblio:
     var style = document.createElement('style');
@@ -63,7 +64,7 @@
 
         function insertDefinition(html, full_url, name, lessonInsertAfter) {
             var h2_style = url.indexOf('lesson') !== -1 ? ' style="margin-top: 1.25em;" ' : "";
-            var newHtml = '<section>'
+            var newHtml = '<section class="' + entryClazz + '">'
                 + '<h2' + h2_style + '>' + name + ' Explanation</h2>'
                 + html + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entry</a>'
                 + '</section>';
@@ -78,16 +79,12 @@
 
         function insertReading(kanjiInfo) {
             if (url.indexOf('kanji') !== -1) {
-                $(".span4").removeClass("span4").addClass("span3").last().after('<div class="span3"><h3>Kanjipedia</h3>' + kanjiInfo + '</div>');
+                $(".span4").removeClass("span4").addClass("span3").last().after('<div class="span3 '+entryClazz+'"><h3>Kanjipedia</h3>' + kanjiInfo + '</div>');
             }
             if (url.indexOf('review') !== -1) {
-                $('#item-info #item-info-col1 #item-info-reading:visible').after("<section><h2>Kanjipedia</h2>" + kanjiInfo + "</section>");
+                $('#item-info #item-info-col1 #item-info-reading:visible').after('<section class="'+entryClazz+'"><h2>Kanjipedia</h2>' + kanjiInfo + "</section>");
             }
         }
-
-        // First, remove any already existing entries:
-        $('.weblio').remove();
-        $('.kanjipedia').remove();
 
         if (kanji) {
             var kanjipediaUrlBase = 'https://www.kanjipedia.jp/';
@@ -112,6 +109,9 @@
                                 .replace(regexSpaceBeforeCircledNumber, "<br/>$1")
                             );
 
+                            // First, remove any already existing entries to avoid displaying entries for other items:
+                            $('.' + entryClazz).remove();
+
                             insertReading(rawResponseNode.find('#kanjiLeftSection #onkunList').html());
 
                             var kanjiDefinition = rawResponseNode.find('#kanjiRightSection p').html() || "Definition not found.";
@@ -132,6 +132,9 @@
                         function() {
                             return $('script', this).length === 0
                         }).html() || "Definition not found.";
+
+                    // First, remove any already existing entries to avoid displaying entries for other items:
+                    $('.' + entryClazz).remove();
 
                     insertDefinition("<div style='margin-bottom: 10px'>" + vocabDefinition + "</div>",
                         vocabPageURL, 'Weblio', '#supplement-voc-meaning-exp');
