@@ -32,8 +32,6 @@
     var kanji;
     var vocab;
 
-    var url = document.URL;
-
     $.jStorage.listenKeyChange('currentItem', function () {
         var current = $.jStorage.get('currentItem');
         kanji = current.kan;
@@ -46,12 +44,13 @@
         vocab = current.voc ? current.voc.replace(/する|〜/, '') : undefined;
     });
 
-    var urlParts = url.split("/");
-    if (urlParts[urlParts.length - 2] === "kanji") {
+    var urlParts = document.URL.split("/");
+    var pageType = urlParts[urlParts.length - 2];
+    if (pageType === "kanji") {
         kanji = urlParts[urlParts.length - 1];
         updateInfo();
     }
-    if (urlParts[urlParts.length - 2] === "vocabulary") {
+    if (pageType === "vocabulary") {
         vocab = urlParts[urlParts.length - 1].replace(/する|〜/, '');
         updateInfo();
     }
@@ -64,29 +63,29 @@
 
         function insertDefinition(definition, full_url, name, lessonInsertAfter) {
 
-            var h2_style = url.indexOf('lesson') !== -1 ? ' style="margin-top: 1.25em;" ' : "";
+            var h2_style = pageType === 'lesson' ? ' style="margin-top: 1.25em;" ' : "";
             var newHtml = '<section class="' + entryClazz + '">'
                 + '<h2' + h2_style + '>' + name + ' Explanation</h2>'
                 + "<div style='margin-bottom: 0.5em;'>" + (definition || "Definition not found.") + "</div>"
                 + '<a href="' + full_url + '"' + hrefColor + ' target="_blank">Click for full entry</a>'
                 + '</section>';
 
-            if (url.indexOf('kanji') !== -1 || url.indexOf('vocabulary') !== -1 || url.indexOf('review') !== -1) {
+            if (pageType === 'kanji' || pageType === 'vocabulary' || pageType === 'review') {
                 $('#note-meaning:visible').before(newHtml);
             }
-            if (url.indexOf('lesson') !== -1) {
+            if (pageType === 'lesson') {
                 $(lessonInsertAfter + ":visible").after(newHtml);
             }
         }
 
         function insertReading(kanjiInfo) {
-            if (url.indexOf('kanji') !== -1) {
+            if (pageType === 'kanji') {
                 $(".span4").removeClass("span4").addClass("span3").last().after('<div class="span3 '+entryClazz+'"><h3>Kanjipedia</h3>' + kanjiInfo + '</div>');
             }
-            if (url.indexOf('review') !== -1) {
+            if (pageType === 'review') {
                 $('#item-info #item-info-col1 #item-info-reading:visible').after('<section class="'+entryClazz+'"><h2>Kanjipedia</h2>' + kanjiInfo + "</section>");
             }
-            if (url.indexOf('lesson') !== -1) {
+            if (pageType === 'lesson') {
                 $('#supplement-kan-reading:visible .pure-u-1-4 > div').first().after('<span class="'+entryClazz+'"><h2 style="margin-top: 1.25em;">Kanjipedia</h2>' + kanjiInfo + "</span>");
             }
         }
@@ -163,7 +162,7 @@
                 for (var i = 0; i < mutations.length; ++i) {
                     for (var j = 0; j < mutations[i].addedNodes.length; ++j) {
                         var addedNode = mutations[i].addedNodes[j];
-                        if (addedNode.id === nodeId && addedNode.style.display !== "none") {
+                        if (addedNode.id === nodeId && addedNode.style && addedNode.style.display !== "none") {
                             updateInfo();
                             return; // we found a node we want to update -> stop iterating
                         }
