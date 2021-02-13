@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WaniKani External Definition
 // @namespace    http://www.wanikani.com
-// @version      0.10
+// @version      0.11
 // @description  Get External Definition from Weblio, Kanjipedia
 // @author       NicoleRauch (original script by polv)
 // @match        *://www.wanikani.com/review/session*
