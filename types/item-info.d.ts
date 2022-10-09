@@ -9,7 +9,7 @@ type WKItemInfoOn =
   | 'extraStudy'
   | 'itemPage';
 
-interface WKItemInfoState<T> {
+interface WKItemInfoState<T extends string> {
   on: WKItemInfoOn;
   type: T extends WKType ? T : WKType;
   under: string[];
@@ -21,8 +21,11 @@ interface WKItemInfoState<T> {
   injector: WKItemInfo<T>;
 }
 
-type WKItemInfoCallback<R, T> = (state: WKItemInfoState<T>) => R;
-type WKItemInfoCallbackHTML<T> = WKItemInfoCallback<HTMLElement | undefined, T>;
+type WKItemInfoCallback<R, T extends string> = (state: WKItemInfoState<T>) => R;
+type WKItemInfoCallbackHTML<T extends string> = WKItemInfoCallback<
+  HTMLElement | undefined,
+  T
+>;
 
 interface WKItemInfoAdditionalSettings {
   injectImmediately?: boolean;
